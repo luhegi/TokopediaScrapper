@@ -14,11 +14,53 @@ class Tokopedia
 	private $conditions;
 	private $html;
 	
+	/**
+	 * @var string
+	 */
+    private $seller_username;
+	/**
+	 * @var string
+	 */
+    private $the_product_sufix;
+
 	function __construct($url)
 	{
+        // $this->sanitizeUrl($url); // sanitize set
 		$this->url = $url;
 	}
-	
+
+	/**
+	 * Sanitize URLs
+	 *
+	 * @access private
+	 * @param string $url url of product
+	 * @return string
+	 * @throw Exception
+	 */
+    private function sanitizeUrl($url)
+    {
+        if (!is_string($url)) {
+            throw new Exception("Invalid Url", E_USER_ERROR);
+        }
+        $url = preg_replace('/^(https?\:)?\/\/(www\.)?tokopedia\.com/i', 'https://www.tokopedia.com', $url);
+        if (strpos($url, 'https://www.tokopedia.com') !== 0) {
+            throw new Exception("Invalid Url Protocol Given", E_USER_ERROR);
+        }
+        preg_match('/https\:\/\/www\.tokopedia\.com\/([a-zA-Z0-9\_]{3,20})\/(.+)/', $url, $match);
+        if (empty($match[1]) || empty($match[2]) || strlen($match[2]) < 3) {
+            throw new Exception("Invalid Url Product.", E_USER_ERROR);
+        }
+        $this->seller_username = trim(strtolower($match[1]));
+        if (strpos($match[2])) {
+            $sufix = explode('?', $match[2]);
+            $sufix[0] = rtrim($sufix[0], '/');
+            $match[2] = implode('?', $sufix);
+        }
+        $this->the_product_sufix = $match[2];
+        $this->url = "https://www.tokopedia.com/{$this->seller_username}/{$this->the_product_sufix}";
+		return $url;
+    }
+
 	private function get_info()
 	{
 		$url = $this->url . '/info';
