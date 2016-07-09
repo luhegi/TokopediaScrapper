@@ -1,4 +1,5 @@
 <?php
+error_reporting(-1);
 /**
  * @Author Muhammad imamul Azmi <imamul.azmi@hotmail.com>
  */
@@ -25,6 +26,7 @@ class Tokopedia {
 	function __construct($url) {
 		// sanitize set
 		$this->sanitizeUrl($url);
+		$this->get_curl($this->url, TRUE);
 	}
 
 	/**
@@ -48,11 +50,11 @@ class Tokopedia {
 			throw new Exception("Invalid Url Product.", E_USER_ERROR);
 		}
 		$this->seller_username = trim(strtolower($match[1]));
-		if (strpos($match[2])) {
-			$sufix    = explode('?', $match[2]);
-			$sufix[0] = rtrim($sufix[0], '/');
-			$match[2] = implode('?', $sufix);
-		}
+		// if (strpos($match[2])) {
+		$sufix    = explode('?', $match[2]);
+		$sufix[0] = rtrim($sufix[0], '/');
+		$match[2] = implode('?', $sufix);
+		// }
 		$this->the_product_sufix = $match[2];
 		$this->url               = "https://www.tokopedia.com/{$this->seller_username}/{$this->the_product_sufix}";
 		return $this->url;
@@ -73,25 +75,27 @@ class Tokopedia {
 	 * @access private
 	 */
 	private function get_info() {
-		$url  = $this->url . '/info';
-		$data = $this->get_curl($url, TRUE);
+		$url  = $this->url;
+		$data = $this->html;
 		$ret  = '';
 
 		// Product Title
-		preg_match('/(<h1 class="product-title green"><a href="(.*)" itemprop="name" content="(.*)">)(.*<\/a><\/h1><div)/', $data, $title);
-		$ret['title'] = $this->valid_result($title[2]);
+		preg_match('/<li class="active"><h2>(.*)<\/h2><\/li>/', $data, $title);
+		$ret['title'] = $this->valid_result($title[1]);
 
 		// Product Descriptions
-		preg_match('/(<p itemprop="description" class="mt-20">)(.*)(<\/p><\/div><\/div><\/div><div)/', $data, $title);
+		preg_match('/(<p itemprop="description" class="mt-20">)(.*)(<\/p><\/div><\/div><\/div><div)/', $data, $desc);
 		$ret['description'] = $this->valid_result($desc[2]);
 
 		// Product Price
-		preg_match('/(<span class="bold" itemprop="price">)(.*)(<\/span><\/div><small id="pcashback"))/', $data, $price);
+		preg_match('/(<span class="bold" itemprop="price">)(.*)(<\/span><\/div><small id="pcashback")/', $data, $price);
 		$ret['price'] = $this->valid_result($price[2]);
 
 		// Product Weight
-		preg_match('/((<\/i>Berat<\/dt><dd class="pull-left m-0">)(.*)(<dt class="pull-left"><i class="icon-shopping)/', $data, $weight);
+		preg_match('/(<\/i>Berat<\/dt><dd class="pull-left m-0">)(.*)(<\/dd><dt class="pull-left"><i class="icon-shopping)/', $data, $weight);
 		$ret['weight'] = $this->valid_result($weight[2]);
+
+		// Product Weight
 
 		// preg_match('/(<p><small>Kategori: )(.*)(<\/small><\/p>)/', $data, $category);
 		// $ret['category'] = $this->valid_result($category[2]);
@@ -120,13 +124,17 @@ class Tokopedia {
 	}
 
 	public function generate() {
-		$data['info']  = $this->get_info();
-		$data['image'] = $this->get_image();
+		$data['info'] = $this->get_info();
+		// $data['image'] = $this->get_image();
+		$data['url'] = $this->url;
 
 		return json_encode($data, JSON_HEX_AMP);
 	}
 
 	/**
+	 * Curl Internal
+	 *
+	 * @access private
 	 * @param $url
 	 * @param $diff
 	 * @return mixed
@@ -137,12 +145,15 @@ class Tokopedia {
 		curl_setopt($ch, CURLOPT_REFERER, "https://www.google.co.id/");
 		curl_setopt($ch, CURLOPT_USERAGENT, "MozillaXYZ/1.0");
 		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 		$output = curl_exec($ch);
 		curl_close($ch);
-		$this->html = $output;
-		return $output;
-
+		if ($diff == TRUE) {
+			return $output;
+		} else {
+			$this->html = $output;
+		}
 	}
 }
