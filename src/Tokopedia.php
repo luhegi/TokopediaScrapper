@@ -58,7 +58,7 @@ class Tokopedia
         }
         $this->the_product_sufix = $match[2];
         $this->url = "https://www.tokopedia.com/{$this->seller_username}/{$this->the_product_sufix}";
-		return $url;
+		return $this->url;
     }
 
 	private function get_info()
@@ -78,8 +78,8 @@ class Tokopedia
 		preg_match('/(<p><small>Kondisi: )(.*)(<\/small>)/', $data, $conditions);
 		$this->conditions = $conditions[2];
 	}
-	
-	
+
+
 	private function get_image() 
 	{
 		$url = $this->url . '/gallery';
