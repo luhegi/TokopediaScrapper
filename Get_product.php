@@ -1,5 +1,4 @@
 <?php
-error_reporting(-1);
 /**
  * @Author Muhammad imamul Azmi <imamul.azmi@hotmail.com>
  */
@@ -85,5 +84,3 @@ class Get_product
 		
 	} 
 }
-$data = new Get_product('http://wap.tokopedia.com/sonyacell34/new-oppo-r7s-16gb-gransi-1-tahun-pin5fcb22a2');
-echo $data->generate();
