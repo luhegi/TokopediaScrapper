@@ -2,7 +2,7 @@
 /**
  * @Author Muhammad imamul Azmi <imamul.azmi@hotmail.com>
  */
-class Get_productinfo
+class Tokopedia
 {
 	private $url;
 	private $desc;
