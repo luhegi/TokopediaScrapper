@@ -2,7 +2,7 @@
 /**
  * @Author Muhammad imamul Azmi <imamul.azmi@hotmail.com>
  */
-class Get_product
+class Get_productinfo
 {
 	private $url;
 	private $desc;
@@ -53,7 +53,7 @@ class Get_product
 		
 	}
 	
-	public function generate($format = 'json') 
+	public function generate() 
 	{
 		$this->get_info();
 		$this->get_image();
