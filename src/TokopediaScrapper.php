@@ -62,14 +62,10 @@ class TokopediaScrapper
         $url = preg_replace('/^(https?\:)?\/\/(www\.)?tokopedia\.com/i', 'https://www.tokopedia.com', $url);
         if (strpos($url, 'https://www.tokopedia.com') !== 0) {
             throw new Exception("Invalid Tokopedia url Given", E_USER_ERROR);
-            // $this->error_handler('The Link Must Tokopedia Website');
-            // return FALSE;
         }
         preg_match('/https\:\/\/www\.tokopedia\.com\/([a-zA-Z0-9\_]{3,20})\/(.+)/', $url, $match);
         if (empty($match[1]) || empty($match[2]) || strlen($match[2]) < 3) {
             throw new Exception("Invalid Url Product.", E_USER_ERROR);
-            // $this->error_handler('The Link is not Valid');
-            // return FALSE;
         }
         $this->sell_username = trim(strtolower($match[1]));
         // if (strpos($match[2])) {
