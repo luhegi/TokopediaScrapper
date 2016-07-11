@@ -1,5 +1,9 @@
-<?php 
-require('../src/Tokopedia.php');
+<?php
 
-$data = new Tokopedia('http://wap.tokopedia.com/jsbsusksmbzls/oppo-f1-plus-selfie-expert-asli-original');
-echo $data->generate();
+require '../src/TokopediaScrapper.php';
+try {
+    $data = new TokopediaScrapper('https://www.tokopedia.com/budgetgadget/car-bluetooth-music-receiver-with-handsfree');
+    echo $data->generate('info');
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
