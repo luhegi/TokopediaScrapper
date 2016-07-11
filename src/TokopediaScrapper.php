@@ -151,7 +151,7 @@ class TokopediaScrapper
             $ren['condition'] = false;
         }
         if (in_array(false, $ren) == true) {
-            throw new Exception("Error to Parse Data", E_USER_WARNING);
+            throw new Exception("Error to Parse Info Data", E_USER_WARNING);
         }
         return $ren;
     }
