@@ -10,8 +10,8 @@ Tokopedia Product Info and Image Scrapper
 ```php
 <?php
 
-require '../src/TokopediaScrapper.php';
-$productUrl = 'https://www.tokopedia.com/xxxx/xxxx';
+require 'TokopediaScrapper.php';
+$productUrl = 'https://www.tokopedia.com/budgetgadget/car-bluetooth-music-receiver-with-handsfree'; // URL Product Example
 try {
     $data = new TokopediaScrapper($productUrl);
     echo $data->generate();
