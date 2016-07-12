@@ -1,7 +1,5 @@
-
-=======
 # TokopediaScrapper ( On Development )
-Tokopedia Product Info Scrapper
+Tokopedia Product Info and Image Scrapper
 
 ### Requirements
 
