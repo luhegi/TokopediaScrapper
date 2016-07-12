@@ -14,16 +14,6 @@ class TokopediaScrapper {
 	private $url;
 
 	/**
-	 * @var CURL Configuration
-	 */
-	private $curlConfig;
-
-	/**
-	 * @var CURL POST Fields
-	 */
-	private $curlPost;
-
-	/**
 	 * @var Sellers Username
 	 */
 	private $sell_username;
