@@ -53,7 +53,7 @@ try {
 }
 
 ```
-#### RESULT $data->generate();
+### RESULT $data->generate();
 ``` json
 {
     "info": {
