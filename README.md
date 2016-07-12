@@ -1,7 +1,7 @@
 # TokopediaScrapper
 Scrap Product Info, Result Array or Json Data
 * Get Product Info 
-* Get Image HD URL
+* Get HD Image URL
 * Easy To Use
 
 ### Requirements
@@ -9,7 +9,7 @@ Scrap Product Info, Result Array or Json Data
 * PHP 5.3.2x or later
 
 ### USAGE
-
+#### Get All Product Info and HD Image URL
 ```php
 <?php
 
@@ -17,13 +17,43 @@ require 'TokopediaScrapper.php';
 $productUrl = 'https://www.tokopedia.com/budgetgadget/car-bluetooth-music-receiver-with-handsfree'; // URL Product Example
 try {
     $data = new TokopediaScrapper($productUrl);
-    echo $data->generate();
+    echo $data->generate(); // Get Product Info and HD Image URL
+    $info = $data->generate('info', FALSE); // Get Product Info Only in Array Return
+    echo $data->generate('image'); // Get HD Image URL Only
 } catch (Exception $e) {
     echo $e->getMessage();
 }
 
 ```
-#### RESULT 
+#### Get Product Info Only in Array Data
+```php
+<?php
+
+require 'TokopediaScrapper.php';
+$productUrl = 'https://www.tokopedia.com/budgetgadget/car-bluetooth-music-receiver-with-handsfree'; // URL Product Example
+try {
+    $data = new TokopediaScrapper($productUrl);
+    $info = $data->generate('info', FALSE); // Get Product Info Only in Array Return
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+
+```
+#### Get Product HD Image Only in Json Data
+```php
+<?php
+
+require 'TokopediaScrapper.php';
+$productUrl = 'https://www.tokopedia.com/budgetgadget/car-bluetooth-music-receiver-with-handsfree'; // URL Product Example
+try {
+    $data = new TokopediaScrapper($productUrl);
+    echo $data->generate('image'); // Get HD Image URL Only in JSON
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+
+```
+#### RESULT $data->generate();
 ``` json
 {
     "info": {
